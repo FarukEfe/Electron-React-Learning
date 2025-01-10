@@ -1,5 +1,6 @@
 import { getRandomValues } from 'crypto';
 import osUtils from 'os-utils'
+import os, { totalmem } from 'os'
 import fs from 'fs'
 
 // Determines the interval (in milliseconds) that updates the values
@@ -9,8 +10,21 @@ export function pollResources() {
     setInterval(async () => {
         const cpuUsage = await getCPU();
         const ramUsage = getRAM();
-        console.log(cpuUsage, ramUsage);
+        const storageData = getStorageData();
+        console.log(cpuUsage, ramUsage, storageData.usage);
     }, POLLING_INTERVAL);
+}
+
+export function getStaticData() {
+    const totalStorage = getStorageData().total;
+    const cpuModel = os.cpus()[0].model;
+    const totalMemoryGB = Math.floor(osUtils.totalmem() / 1024);
+
+    return {
+        totalStorage,
+        cpuModel,
+        totalMemoryGB,
+    }
 }
 
 function getCPU() {
