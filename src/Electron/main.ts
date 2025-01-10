@@ -1,6 +1,7 @@
 import {app, BrowserWindow} from 'electron';
 import path from 'path';
 import { isDev } from './util.js';
+import { pollResources } from './resource.js';
 
 app.on('ready', () => {
     const mainWindow = new BrowserWindow({});
@@ -11,4 +12,6 @@ app.on('ready', () => {
         // Run deployment on build file
         mainWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'));
     }
+
+    pollResources();
 });
